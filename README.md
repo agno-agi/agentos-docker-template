@@ -55,7 +55,7 @@ Once started, you can:
 To load the knowledge base, you can use the following command:
 
 ```sh
-docker exec -it agentos-docker python -m agents.knowledge_agent
+docker exec -it agentos-api python -m agents.knowledge_agent
 ```
 
 ### Stop the application

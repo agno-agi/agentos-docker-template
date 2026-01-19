@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["mypy", "ruff", "pytest", "pytest-asyncio"]
+dev = ["mypy", "ruff"]
 
 [build-system]
 requires = ["setuptools"]

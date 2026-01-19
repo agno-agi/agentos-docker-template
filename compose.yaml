@@ -1,12 +1,12 @@
 services:
   pgvector:
-    image: agnohq/pgvector:16
+    image: agnohq/pgvector:18
     container_name: pgvector
     restart: unless-stopped
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
     environment:
       POSTGRES_USER: ${DB_USER:-ai}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-ai}
@@ -14,8 +14,8 @@ services:
     networks:
       - agentos
 
-  api:
-    container_name: agentos-docker
+  agent-os-api:
+    container_name: agentos-api
     build:
       context: .
       dockerfile: Dockerfile
