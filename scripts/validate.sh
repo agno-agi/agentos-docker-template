@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 ############################################################################
@@ -34,4 +33,3 @@ mypy ${REPO_ROOT} --config-file ${REPO_ROOT}/pyproject.toml
 echo ""
 echo -e "    ${BOLD}Done.${NC}"
 echo ""
-```

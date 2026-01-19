@@ -1,17 +1,18 @@
 #!/bin/bash
 
 ############################################################################
-# Development Setup
-# - This script creates a virtual environment and installs libraries in editable mode.
-# - Please install uv before running this script.
-# - Please deactivate the existing virtual environment before running.
-# Usage: ./scripts/dev_setup.sh
+#
+#    Agno Development Environment Setup
+#
+#    Usage: ./scripts/dev_setup.sh
+#
 ############################################################################
 
+set -e
+
 CURR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(dirname $CURR_DIR)"
+REPO_ROOT="$(dirname "${CURR_DIR}")"
 VENV_DIR="${REPO_ROOT}/.venv"
-source ${CURR_DIR}/_utils.sh
 
 # Colors
 ORANGE='\033[38;5;208m'
@@ -30,24 +31,54 @@ cat << 'BANNER'
     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝
 BANNER
 echo -e "${NC}"
-echo -e "    ${DIM}AgentOS Environment Setup${NC}"
+echo -e "    ${DIM}Development Environment Setup${NC}"
 echo ""
 
-print_heading "Removing virtual env"
-print_info "rm -rf ${VENV_DIR}"
+# Preflight
+if [[ -n "$VIRTUAL_ENV" ]]; then
+    echo "    Deactivate your current venv first."
+    exit 1
+fi
+
+if ! command -v uv &> /dev/null; then
+    echo "    uv not found. Install: https://docs.astral.sh/uv/"
+    exit 1
+fi
+
+# Setup
+echo -e "    ${DIM}Removing old environment...${NC}"
+echo -e "    ${DIM}> rm -rf ${VENV_DIR}${NC}"
 rm -rf ${VENV_DIR}
 
-print_heading "Creating virtual env"
-print_info "VIRTUAL_ENV=${VENV_DIR} uv venv --python 3.12"
-VIRTUAL_ENV=${VENV_DIR} uv venv --python 3.12
+echo ""
+echo -e "    ${DIM}Creating Python 3.12 venv...${NC}"
+echo -e "    ${DIM}> uv venv ${VENV_DIR} --python 3.12${NC}"
+uv venv ${VENV_DIR} --python 3.12 --quiet
 
-print_heading "Installing requirements"
-print_info "VIRTUAL_ENV=${VENV_DIR} uv pip install -r ${REPO_ROOT}/requirements.txt"
-VIRTUAL_ENV=${VENV_DIR} uv pip install -r ${REPO_ROOT}/requirements.txt
+echo ""
+echo -e "    ${DIM}Installing requirements...${NC}"
+echo -e "    ${DIM}> uv pip install -r requirements.txt${NC}"
+VIRTUAL_ENV=${VENV_DIR} uv pip install -r ${REPO_ROOT}/requirements.txt --quiet
 
-print_heading "Installing project in editable mode with dev dependencies"
-print_info "VIRTUAL_ENV=${VENV_DIR} uv pip install -e ${REPO_ROOT}[dev]"
-VIRTUAL_ENV=${VENV_DIR} uv pip install -e ${REPO_ROOT}[dev]
+echo ""
+echo -e "    ${DIM}Installing project in editable mode with dev dependencies...${NC}"
+echo -e "    ${DIM}> uv pip install -e .[dev]${NC}"
+VIRTUAL_ENV=${VENV_DIR} uv pip install -e ${REPO_ROOT}[dev] --quiet
 
-print_heading "Development setup complete"
-print_heading "Activate venv using: source .venv/bin/activate"
+# Copy activation command to clipboard
+ACTIVATE_CMD="source .venv/bin/activate"
+if command -v pbcopy &> /dev/null; then
+    echo -n "${ACTIVATE_CMD}" | pbcopy
+    CLIPBOARD_MSG="(Copied to clipboard)"
+elif command -v xclip &> /dev/null; then
+    echo -n "${ACTIVATE_CMD}" | xclip -selection clipboard
+    CLIPBOARD_MSG="(Copied to clipboard)"
+else
+    CLIPBOARD_MSG=""
+fi
+
+echo ""
+echo -e "    ${BOLD}Done.${NC}"
+echo ""
+echo -e "    ${DIM}Activate:${NC}  ${ACTIVATE_CMD} ${DIM}${CLIPBOARD_MSG}${NC}"
+echo ""

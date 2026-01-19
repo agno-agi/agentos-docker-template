@@ -1,6 +1,6 @@
 # Agent OS Template
 
-Welcome to Agent OS Docker: a robust, production-ready application for serving Agentic Applications as an API. It includes:
+Welcome to Agent OS Docker Template: a robust, production-ready application for serving Agentic Applications as an API. It includes:
 
 - An **AgentOS instance**: An API-based interface for production-ready Agentic Applications.
 - A **PostgreSQL database** for storing Agent sessions, knowledge, and memories.
@@ -32,7 +32,7 @@ export OPENAI_API_KEY="YOUR_API_KEY_HERE"
 ### Start the application
 
 ```sh
-docker compose up agentos-docker -d --build
+docker compose up -d --build
 ```
 
 This command starts:
