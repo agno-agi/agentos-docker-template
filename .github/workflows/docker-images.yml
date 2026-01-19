@@ -34,4 +34,4 @@ jobs:
           file: Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ vars.DOCKERHUB_NAMESPACE }}/agent-infra-aws:dev, ${{ vars.DOCKERHUB_NAMESPACE }}/agent-infra-docker:prd
+          tags: ${{ vars.DOCKERHUB_NAMESPACE }}/agentos-template:dev, ${{ vars.DOCKERHUB_NAMESPACE }}/agentos-template:prd
