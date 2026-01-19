@@ -1,127 +1,110 @@
-# Agent OS Template
+# AgentOS Docker Template
 
-Welcome to Agent OS Docker Template: a robust, production-ready application for serving Agentic Applications as an API. It includes:
-
-- An **AgentOS instance**: An API-based interface for production-ready Agentic Applications.
-- A **PostgreSQL database** for storing Agent sessions, knowledge, and memories.
+Run agents, teams, and workflows as a production-ready API. Deploy anywhere Docker runs.
 
 ## Quickstart
 
-Follow these steps to get your Agent OS up and running:
+### Prerequisites
 
-> [Get Docker Desktop](https://www.docker.com/products/docker-desktop) should be installed and running.
-> [Get OpenAI API key](https://platform.openai.com/api-keys)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
+- [OpenAI API key](https://platform.openai.com/api-keys)
 
-### Clone the repo
-
-```sh
-git clone https://github.com/agno-agi/agentos-docker-template.git
-cd agentos-docker-template
-```
-
-### Configure API keys
-
-We use GPT 5 Mini as the default model, please export the `OPENAI_API_KEY` environment variable to get started.
+### Clone and configure
 
 ```sh
-export OPENAI_API_KEY="YOUR_API_KEY_HERE"
+git clone https://github.com/agno-agi/agentos-docker-template.git agentos-docker
+cd agentos-docker
+
+cp example.env .env
+# Add OPENAI_API_KEY to .env
 ```
 
-> **Note**: You can use any model provider, just update the agents in the `/agents` folder and add the required library in the `pyproject.toml` and `requirements.txt` file.
+> Agno works with any model provider. Update the agents in `/agents` and add dependencies to `pyproject.toml`.
 
-### Start the application
+### Start AgentOS
 
 ```sh
 docker compose up -d --build
 ```
 
-This command starts:
+This starts:
+- **AgentOS** (FastAPI server) on http://localhost:8000
+- **PostgreSQL** with pgvector on localhost:5432
 
-- The **AgentOS instance**, which is a FastAPI server, running on [http://localhost:8080](http://localhost:8080).
-- The **PostgreSQL database**, accessible on `localhost:5432`.
+Open http://localhost:8000/docs to see the API.
 
-Once started, you can:
+### Connect to the control plane
 
-- Test the API at [http://localhost:8080/docs](http://localhost:8080/docs).
+1. Open [os.agno.com](https://os.agno.com)
+2. Click "Add OS" and select "Local"
+3. Enter `http://localhost:8000`
 
-### Connect to AgentOS UI
-
-- Open the [Agno AgentOS UI](https://os.agno.com).
-- Connect your OS with `http://localhost:8080` as the endpoint. You can name it `AgentOS` (or any name you prefer).
-- Explore all the features of AgentOS or go straight to the Chat page to interact with your Agents.
-
-### How to load the knowledge base locally
-
-To load the knowledge base, you can use the following command:
-
-```sh
-docker exec -it agentos-api python -m agents.knowledge_agent
-```
-
-### Stop the application
-
-When you're done, stop the application using:
+### Stop AgentOS
 
 ```sh
 docker compose down
 ```
 
-## Development Setup
+## Project Structure
 
-To setup your local virtual environment:
+```
+agentos-docker/
+├── agents/              # Your agents
+├── app/                 # AgentOS entry point
+├── db/                  # Database connection
+├── scripts/             # Helper scripts
+├── compose.yaml         # Docker Compose configuration
+├── Dockerfile           # Container build
+├── example.env          # Example environment variables
+└── pyproject.toml       # Python dependencies
+```
 
-### Install `uv`
+## Common Tasks
 
-We use `uv` for python environment and package management. Install it by following the the [`uv` documentation](https://docs.astral.sh/uv/#getting-started) or use the command below for unix-like systems:
+### Load a knowledge base
+```sh
+docker exec -it agentos-api python -m agents.knowledge_agent
+```
 
+### View logs
+```sh
+docker compose logs -f
+```
+
+### Restart after code changes
+```sh
+docker compose restart
+```
+
+## Local Development
+
+For development without Docker:
+
+### Install uv
 ```sh
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Create Virtual Environment & Install Dependencies
-
-Run the `dev_setup.sh` script. This will create a virtual environment and install project dependencies:
-
+### Setup environment
 ```sh
-./scripts/dev_setup.sh
-```
-
-### Activate Virtual Environment
-
-Activate the created virtual environment:
-
-```sh
+./scripts/venv_setup.sh
 source .venv/bin/activate
 ```
 
-(On Windows, the command might differ, e.g., `.venv\Scripts\activate`)
+### Add dependencies
 
-## Managing Python Dependencies
-
-If you need to add or update python dependencies:
-
-### Modify pyproject.toml
-
-Add or update your desired Python package dependencies in the `[dependencies]` section of the `pyproject.toml` file.
-
-### Generate requirements.txt
-
-The `requirements.txt` file is used to build the application image. After modifying `pyproject.toml`, regenerate `requirements.txt` using:
-
+1. Edit `pyproject.toml`
+2. Regenerate requirements:
 ```sh
 ./scripts/generate_requirements.sh
 ```
-
-To upgrade all existing dependencies to their latest compatible versions, run:
-
-```sh
-./scripts/generate_requirements.sh upgrade
-```
-
-### Rebuild Docker Images
-
-Rebuild your Docker images to include the updated dependencies:
-
+3. Rebuild:
 ```sh
 docker compose up -d --build
 ```
+
+## Learn More
+
+- [Agno Documentation](https://docs.agno.com)
+- [AgentOS Documentation](https://docs.agno.com/agent-os)
+- [Discord Community](https://agno.link/discord)
