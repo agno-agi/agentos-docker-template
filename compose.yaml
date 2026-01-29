@@ -9,7 +9,7 @@ services:
       - pgdata:/var/lib/postgresql
     environment:
       POSTGRES_USER: ${DB_USER:-ai}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-ai}
+      POSTGRES_PASSWORD: ${DB_PASS:-ai}
       POSTGRES_DB: ${DB_DATABASE:-ai}
     networks:
       - agentos
@@ -34,7 +34,7 @@ services:
       DB_HOST: agentos-db
       DB_PORT: 5432
       DB_USER: ${DB_USER:-ai}
-      DB_PASSWORD: ${DB_PASSWORD:-ai}
+      DB_PASS: ${DB_PASS:-ai}
       DB_DATABASE: ${DB_DATABASE:-ai}
       WAIT_FOR_DB: "True"
       PRINT_ENV_ON_LOAD: "True"
