@@ -74,4 +74,3 @@ knowledge_agent = Agent(
 if __name__ == "__main__":
     knowledge.insert(name="Agno Introduction", url="https://docs.agno.com/introduction.md")
     knowledge.insert(name="Agno Quickstart", url="https://docs.agno.com/get-started/quickstart.md")
-    knowledge_agent.cli_app(stream=True)
