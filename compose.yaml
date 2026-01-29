@@ -34,7 +34,7 @@ services:
       DB_HOST: agentos-db
       DB_PORT: 5432
       DB_USER: ${DB_USER:-ai}
-      DB_PASS: ${DB_PASSWORD:-ai}
+      DB_PASSWORD: ${DB_PASSWORD:-ai}
       DB_DATABASE: ${DB_DATABASE:-ai}
       WAIT_FOR_DB: "True"
       PRINT_ENV_ON_LOAD: "True"
