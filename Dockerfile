@@ -26,7 +26,7 @@ COPY --chown=${USER}:${USER} . .
 
 USER ${USER}
 
-EXPOSE 8001
+EXPOSE 8000
 
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]
 CMD ["chill"]
