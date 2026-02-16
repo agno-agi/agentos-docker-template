@@ -29,8 +29,8 @@ services:
       - agentos-data:/data
     environment:
       DATA_DIR: /data
-      RUNTIME_ENV: dev
-      AGNO_DEBUG: "True"
+      RUNTIME_ENV: prd
+      AGNO_DEBUG: "False"
       DB_HOST: agentos-db
       DB_PORT: 5432
       DB_USER: ${DB_USER}
