@@ -12,3 +12,5 @@ chat:
       - "What is Agno?"
       - "What tools do you have access to?"
       - "What are Learning Machines?"
+    slack-agent:
+      - "What new bro?"
