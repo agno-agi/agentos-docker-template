@@ -11,8 +11,6 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_DATABASE}
-    networks:
-      - agentos
 
   agentos-api:
     container_name: agentos-api
@@ -20,10 +18,9 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ${IMAGE_NAME:-agno-agentos}:${IMAGE_TAG:-latest}
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     restart: unless-stopped
     volumes:
-      - .:/app
       - agentos-data:/data
     environment:
       DATA_DIR: /data
@@ -42,9 +39,6 @@ services:
       - agentos-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-networks:
-  agentos:
 
 volumes:
   pgdata:
