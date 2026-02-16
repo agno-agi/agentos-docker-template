@@ -16,8 +16,10 @@ from agno.os import AgentOS
 from agents.knowledge_agent import knowledge_agent
 from agents.mcp_agent import mcp_agent
 from agents.pal import pal, pal_knowledge
+from agno.os.interfaces.slack import Slack
 from agents.slack_agent import slack_agent
 from db import get_postgres_db
+import os
 
 
 # ============================================================================
@@ -37,5 +39,11 @@ app = agent_os.get_app()
 if __name__ == "__main__":
     agent_os.serve(
         app="main:app",
+        interfaces=[
+            Slack(
+                bot_token=os.environ["SLACK_TOKEN"],
+                signing_secret=os.environ["SLACK_SIGNING_SECRET"],
+            )
+        ],
         reload=getenv("RUNTIME_ENV", "prd") == "dev",
     )
