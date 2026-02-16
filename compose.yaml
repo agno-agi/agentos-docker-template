@@ -8,9 +8,9 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql
     environment:
-      POSTGRES_USER: ${DB_USER:-ai}
-      POSTGRES_PASSWORD: ${DB_PASS:-ai}
-      POSTGRES_DB: ${DB_DATABASE:-ai}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_DATABASE}
     networks:
       - agentos
 
@@ -33,9 +33,9 @@ services:
       AGNO_DEBUG: "True"
       DB_HOST: agentos-db
       DB_PORT: 5432
-      DB_USER: ${DB_USER:-ai}
-      DB_PASS: ${DB_PASS:-ai}
-      DB_DATABASE: ${DB_DATABASE:-ai}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_DATABASE: ${DB_DATABASE}
       WAIT_FOR_DB: "True"
       PRINT_ENV_ON_LOAD: "False"
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
