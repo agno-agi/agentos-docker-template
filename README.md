@@ -1,71 +1,62 @@
 # AgentOS Docker Template
 
-Deploy a multi-agent system with Docker.
-
-[What is AgentOS?](https://docs.agno.com/agent-os/introduction) · [Agno Docs](https://docs.agno.com) · [Discord](https://agno.com/discord)
-
----
+Deploy a multi-agent system on Docker.
 
 ## What's Included
 
 | Agent | Pattern | Description |
 |-------|---------|-------------|
-| Knowledge Agent | RAG | Answers questions from a knowledge base |
-| MCP Agent | Tool Use | Connects to external services via MCP |
-
----
+| Knowledge Agent | Agentic RAG | Answers questions from a knowledge base. |
+| MCP Agent | MCP Tool Use | Connects to external services via MCP. |
 
 ## Get Started
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- [OpenAI API key](https://platform.openai.com/api-keys)
-
-### 1. Clone and configure
-
 ```sh
-git clone https://github.com/agno-agi/agentos-docker-template.git agentos-docker
-cd agentos-docker
+# Clone the repo
+git clone https://github.com/agno-agi/agentos-railway-template.git agentos-railway
+cd agentos-railway
+
+# Add OPENAI_API_KEY
 cp example.env .env
-# Add your OPENAI_API_KEY to .env
-```
+# Edit .env and add your key
 
-### 2. Start locally
-
-```sh
+# Start the application
 docker compose up -d --build
 
 # Load documents for the knowledge agent
 docker exec -it agentos-api python -m agents.knowledge_agent
 ```
 
-- **API**: http://localhost:8000
-- **Docs**: http://localhost:8000/docs
-- **Database**: localhost:5432
+Confirm AgentOS is running at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-### 3. Connect to control plane
+### Connect to the Web UI
 
-1. Open [os.agno.com](https://os.agno.com)
-2. Click "Add OS" → "Local"
-3. Enter `http://localhost:8000`
-
----
+1. Open [os.agno.com](https://os.agno.com) and login
+2. Add OS → Local → `http://localhost:8000`
+3. Click "Connect"
 
 ## The Agents
 
 ### Knowledge Agent
 
-Answers questions using a vector knowledge base (RAG pattern).
+Answers questions using hybrid search over a vector database (Agentic RAG).
+
+**Load documents:**
+
+```sh
+# Local
+docker exec -it agentos-api python -m agents.knowledge_agent
+
+# Railway
+railway run python -m agents.knowledge_agent
+```
 
 **Try it:**
+
 ```
 What is Agno?
 How do I create my first agent?
 What documents are in your knowledge base?
-```
-
-**Load documents:**
-```sh
-docker exec -it agentos-api python -m agents.knowledge_agent
 ```
 
 ### MCP Agent
@@ -73,39 +64,19 @@ docker exec -it agentos-api python -m agents.knowledge_agent
 Connects to external tools via the Model Context Protocol.
 
 **Try it:**
+
 ```
 What tools do you have access to?
 Search the docs for how to use LearningMachine
 Find examples of agents with memory
 ```
 
----
-
-## Project Structure
-
-```
-├── agents/
-│   ├── knowledge_agent.py   # RAG agent
-│   └── mcp_agent.py         # MCP tools agent
-├── app/
-│   ├── main.py              # AgentOS entry point
-│   └── config.yaml          # Quick prompts config
-├── db/
-│   ├── session.py           # Database session helpers
-│   └── url.py               # Connection URL builder
-├── scripts/                 # Helper scripts
-├── compose.yaml             # Docker Compose config
-├── Dockerfile
-└── pyproject.toml           # Dependencies
-```
-
----
-
 ## Common Tasks
 
 ### Add your own agent
 
 1. Create `agents/my_agent.py`:
+
 ```python
 from agno.agent import Agent
 from agno.models.openai import OpenAIResponses
@@ -114,13 +85,14 @@ from db import get_postgres_db
 my_agent = Agent(
     id="my-agent",
     name="My Agent",
-    model=OpenAIResponses(id="gpt-4o"),
+    model=OpenAIResponses(id="gpt-5.2"),
     db=get_postgres_db(),
     instructions="You are a helpful assistant.",
 )
 ```
 
 2. Register in `app/main.py`:
+
 ```python
 from agents.my_agent import my_agent
 
@@ -136,6 +108,7 @@ agent_os = AgentOS(
 ### Add tools to an agent
 
 Agno includes 100+ tool integrations. See the [full list](https://docs.agno.com/tools/toolkits).
+
 ```python
 from agno.tools.slack import SlackTools
 from agno.tools.google_calendar import GoogleCalendarTools
@@ -159,6 +132,7 @@ my_agent = Agent(
 
 1. Add your API key to `.env` (e.g., `ANTHROPIC_API_KEY`)
 2. Update agents to use the new provider:
+
 ```python
 from agno.models.anthropic import Claude
 
@@ -186,8 +160,6 @@ docker compose up -d agentos-db
 python -m app.main
 ```
 
----
-
 ## Environment Variables
 
 | Variable | Required | Default | Description |
@@ -200,11 +172,8 @@ python -m app.main
 | `DB_DATABASE` | No | `ai` | Database name |
 | `RUNTIME_ENV` | No | `prd` | Set to `dev` for auto-reload |
 
----
-
 ## Learn More
 
 - [Agno Documentation](https://docs.agno.com)
 - [AgentOS Documentation](https://docs.agno.com/agent-os/introduction)
-- [Tools & Integrations](https://docs.agno.com/tools/toolkits)
-- [Discord Community](https://agno.com/discord)
+- [Agno Discord](https://agno.com/discord)
