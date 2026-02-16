@@ -37,6 +37,7 @@ services:
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
       SLACK_TOKEN: ${SLACK_TOKEN}
       SLACK_SIGNING_SECRET: ${SLACK_SIGNING_SECRET}
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN}
       EXA_API_KEY: ${EXA_API_KEY:-}
     depends_on:
       - agentos-db
