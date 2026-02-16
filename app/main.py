@@ -15,7 +15,6 @@ from agno.os import AgentOS
 
 from agents.knowledge_agent import knowledge_agent
 from agents.mcp_agent import mcp_agent
-from agents.pal import pal, pal_knowledge
 from db import get_postgres_db
 
 # ---------------------------------------------------------------------------
@@ -26,8 +25,7 @@ agent_os = AgentOS(
     tracing=True,
     scheduler=True,
     db=get_postgres_db(),
-    agents=[pal, knowledge_agent, mcp_agent],
-    knowledge=[pal_knowledge],
+    agents=[knowledge_agent, mcp_agent],
     config=str(Path(__file__).parent / "config.yaml"),
 )
 

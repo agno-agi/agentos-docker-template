@@ -8,7 +8,7 @@ authors = [{ name = "Agno", email = "hello@agno.com" }]
 
 dependencies = [
   # Agno
-  "agno",
+  "agno>=2.5.2",
   # API
   "fastapi[standard]",
   # Models
@@ -17,11 +17,8 @@ dependencies = [
   "pgvector",
   "psycopg[binary]",
   "sqlalchemy",
-  "duckdb",
   # Tools
   "mcp",
-  "reportlab",
-  "duckduckgo-search",
   # Tracing
   "opentelemetry-api",
   "opentelemetry-sdk",
@@ -53,7 +50,7 @@ plugins = ["pydantic.mypy"]
 exclude = [".venv*"]
 
 [[tool.mypy.overrides]]
-module = ["pgvector.*", "setuptools.*", "agno.*", "httpx.*", "mcp.*", "duckdb.*"]
+module = ["pgvector.*", "setuptools.*", "agno.*", "httpx.*", "mcp.*"]
 ignore_missing_imports = true
 
 [tool.uv.pip]

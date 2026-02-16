@@ -2,6 +2,7 @@ services:
   agentos-db:
     image: agnohq/pgvector:18
     container_name: agentos-db
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER:-ai}
       POSTGRES_PASSWORD: ${DB_PASS:-ai}
@@ -26,11 +27,8 @@ services:
     volumes:
       # Hot-reload: mount source code
       - .:/app
-      - agentos-data:/data
     environment:
-      DATA_DIR: /data
       RUNTIME_ENV: dev
-      AGNO_DEBUG: "True"
       DB_HOST: agentos-db
       DB_PORT: 5432
       DB_USER: ${DB_USER:-ai}
@@ -39,7 +37,6 @@ services:
       WAIT_FOR_DB: "True"
       PRINT_ENV_ON_LOAD: "True"
       OPENAI_API_KEY: ${OPENAI_API_KEY}
-      EXA_API_KEY: ${EXA_API_KEY:-}
     depends_on:
       - agentos-db
     networks:
@@ -52,4 +49,3 @@ networks:
 
 volumes:
   pgdata:
-  agentos-data:

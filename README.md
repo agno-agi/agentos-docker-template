@@ -10,7 +10,6 @@ Deploy a multi-agent system with Docker.
 
 | Agent | Pattern | Description |
 |-------|---------|-------------|
-| **Pal** | Learning + Tools | Your AI-powered second brain |
 | Knowledge Agent | RAG | Answers questions from a knowledge base |
 | MCP Agent | Tool Use | Connects to external services via MCP |
 
@@ -53,37 +52,6 @@ docker exec -it agentos-api python -m agents.knowledge_agent
 
 ## The Agents
 
-### Pal (Personal Agent that Learns)
-
-Your AI-powered second brain. Pal researches, captures, organizes, connects, and retrieves your personal knowledge - so nothing useful is ever lost.
-
-**What Pal stores:**
-
-| Type | Examples |
-|------|----------|
-| **Notes** | Ideas, decisions, snippets, learnings |
-| **Bookmarks** | URLs with context - why you saved it |
-| **People** | Contacts - who they are, how you know them |
-| **Meetings** | Notes, decisions, action items |
-| **Projects** | Goals, status, related items |
-| **Research** | Findings from web search, saved for later |
-
-**Try it:**
-```
-Note: decided to use Postgres for the new project - better JSON support
-Bookmark https://www.ashpreetbedi.com/articles/lm-technical-design - great intro
-Research event sourcing patterns and save the key findings
-What notes do I have?
-What do I know about event sourcing?
-```
-
-**How it works:**
-- **DuckDB** stores your actual data (notes, bookmarks, people, etc.)
-- **Learning system** remembers schemas and research findings
-- **Exa search** powers web research, company lookup, and people search
-
-**Data persistence:** Pal stores structured data in DuckDB at `/data/pal.db`. This persists across container restarts.
-
 ### Knowledge Agent
 
 Answers questions using a vector knowledge base (RAG pattern).
@@ -117,7 +85,6 @@ Find examples of agents with memory
 
 ```
 ├── agents/
-│   ├── pal.py               # Personal second brain agent
 │   ├── knowledge_agent.py   # RAG agent
 │   └── mcp_agent.py         # MCP tools agent
 ├── app/
@@ -147,7 +114,7 @@ from db import get_postgres_db
 my_agent = Agent(
     id="my-agent",
     name="My Agent",
-    model=OpenAIResponses(id="gpt-5.2"),
+    model=OpenAIResponses(id="gpt-4o"),
     db=get_postgres_db(),
     instructions="You are a helpful assistant.",
 )
@@ -159,7 +126,7 @@ from agents.my_agent import my_agent
 
 agent_os = AgentOS(
     name="AgentOS",
-    agents=[pal, knowledge_agent, mcp_agent, my_agent],
+    agents=[knowledge_agent, mcp_agent, my_agent],
     ...
 )
 ```
@@ -226,58 +193,12 @@ python -m app.main
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `OPENAI_API_KEY` | Yes | - | OpenAI API key |
-| `EXA_API_KEY` | No | - | Exa API key for web research |
 | `DB_HOST` | No | `localhost` | Database host |
 | `DB_PORT` | No | `5432` | Database port |
 | `DB_USER` | No | `ai` | Database user |
 | `DB_PASS` | No | `ai` | Database password |
 | `DB_DATABASE` | No | `ai` | Database name |
-| `DATA_DIR` | No | `/data` | Directory for DuckDB storage |
 | `RUNTIME_ENV` | No | `prd` | Set to `dev` for auto-reload |
-
----
-
-## Extending Pal
-
-Pal is designed to be extended. Connect it to your existing tools:
-
-### Communication
-```python
-from agno.tools.slack import SlackTools
-from agno.tools.gmail import GmailTools
-
-tools=[
-    ...
-    SlackTools(),    # Capture decisions from Slack
-    GmailTools(),    # Track important emails
-]
-```
-
-### Productivity
-```python
-from agno.tools.google_calendar import GoogleCalendarTools
-from agno.tools.linear import LinearTools
-
-tools=[
-    ...
-    GoogleCalendarTools(),  # Meeting context
-    LinearTools(),          # Project tracking
-]
-```
-
-### Research
-```python
-from agno.tools.yfinance import YFinanceTools
-from agno.tools.github import GithubTools
-
-tools=[
-    ...
-    YFinanceTools(),  # Financial data
-    GithubTools(),    # Code and repos
-]
-```
-
-See the [Agno Tools documentation](https://docs.agno.com/tools/toolkits) for the full list of available integrations.
 
 ---
 
