@@ -13,8 +13,8 @@ Deploy a multi-agent system on Docker.
 
 ```sh
 # Clone the repo
-git clone https://github.com/agno-agi/agentos-railway-template.git agentos-railway
-cd agentos-railway
+git clone https://github.com/agno-agi/agentos-docker-template.git agentos
+cd agentos
 
 # Add OPENAI_API_KEY
 cp example.env .env
