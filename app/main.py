@@ -21,9 +21,7 @@ from db import get_postgres_db
 # Create AgentOS
 # ---------------------------------------------------------------------------
 runtime_env = getenv("RUNTIME_ENV", "prd")
-scheduler_base_url = (
-    "http://127.0.0.1:8000" if runtime_env == "dev" else getenv("AGENTOS_URL")
-)
+scheduler_base_url = "http://127.0.0.1:8000" if runtime_env == "dev" else getenv("AGENTOS_URL")
 
 agent_os = AgentOS(
     name="AgentOS",
