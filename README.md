@@ -232,6 +232,19 @@ python -m app.main
 | `DB_DATABASE` | No | `ai` | Database name |
 | `DATA_DIR` | No | `/data` | Directory for DuckDB storage |
 | `RUNTIME_ENV` | No | `prd` | Set to `dev` for auto-reload |
+| `IMAGE_NAME` | No | `agentos-api` | Image name for the API service (set in Coolify to the image you build) |
+| `IMAGE_TAG` | No | `latest` | Image tag (set in Coolify if you use a specific tag) |
+
+---
+
+## Deploying with Coolify
+
+Coolify builds the image in a helper container and tags it with its own name. To avoid "pull access denied for agno-agentos", set these in your Coolify deployment environment so Compose uses the image that was just built instead of pulling from a registry:
+
+- **IMAGE_NAME** – Set to the full image name Coolify uses for this service (e.g. your Coolify registry URL and path, or the generated image name in the build step).
+- **IMAGE_TAG** – Optional; set if Coolify uses a tag other than `latest`.
+
+After setting these, redeploy so `docker compose up -d` uses the built image.
 
 ---
 
