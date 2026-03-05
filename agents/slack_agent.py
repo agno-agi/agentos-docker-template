@@ -9,3 +9,6 @@ slack_agent = Agent(
     num_history_runs=3,
     add_datetime_to_context=True,
 )
+
+if __name__ == "__main__":
+    slack_agent.print_response("Tell me about yourself", stream=True)
