@@ -18,6 +18,7 @@ from agents.mcp_agent import mcp_agent
 from agents.pal import pal, pal_knowledge
 from agno.os.interfaces.slack import Slack
 from agents.slack_agent import slack_agent
+from agents.neo import neo
 from db import get_postgres_db
 import os
 
@@ -26,10 +27,10 @@ import os
 # Create AgentOS
 # ============================================================================
 agent_os = AgentOS(
-    name="TheAIBuildr AgentOS",
+    name="The-Ai-Buildr AgentOS",
     tracing=True,
     db=get_postgres_db(),
-    agents=[pal, knowledge_agent, mcp_agent, slack_agent],
+    agents=[neo,pal, knowledge_agent, mcp_agent, slack_agent],
     knowledge=[pal_knowledge],
     config=str(Path(__file__).parent / "config.yaml"),
 )
