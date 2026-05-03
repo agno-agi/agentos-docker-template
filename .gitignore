@@ -60,5 +60,12 @@ Thumbs.db
 # =========================
 tmp
 
+# Generated / processed knowledge files (large, rebuilt by quant_parse.py)
+OpenDataLoader/output/
+OpenDataLoader/split/
+openDataLoader/output/
+openDataLoader/split/
+knowledge/**/*.md
+
 # Optional: local PyPI creds (uncomment if you ever create it)
 # .pypirc
