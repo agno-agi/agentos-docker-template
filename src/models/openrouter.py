@@ -10,33 +10,21 @@ from agno.models.openrouter import OpenRouter as AgnoOpenRouter
 DEFAULT_MODEL_ID = "anthropic/claude-sonnet-4.6"
 ModelType = Literal[
     "default",
-    "claude",
-    "mini",
     "grok",
     "claude-opus",
     "claude-sonnet",
-    "openai-pro",
-    "openai-mini",
-    "gemini-pro",
-    "gemini-flash",
+    "openai",
     "kimi",
-    "perplexity-reasoning",
-    "perplexity-pro",
+    "perplexity",
 ]
 MODEL_PRESETS: dict[ModelType, str] = {
     "default": DEFAULT_MODEL_ID,
-    "claude": "anthropic/claude-sonnet-4.6",
-    "mini": "openai/gpt-5-nano",
-    "grok": "x-ai/grok-4.1-fast",
-    "claude-opus": "anthropic/claude-opus-4.6",
+    "grok": "x-ai/grok-4.3",
+    "claude-opus": "anthropic/claude-opus-4.7",
     "claude-sonnet": "anthropic/claude-sonnet-4.6",
-    "openai-pro": "openai/gpt-5.4-pro",
-    "openai-mini": "openai/gpt-5-nano",
-    "gemini-pro": "google/gemini-3.1-pro-preview",
-    "gemini-flash": "google/gemini-3.1-flash-lite-preview",
-    "kimi": "moonshotai/kimi-k2.5",
-    "perplexity-reasoning": "perplexity/sonar-reasoning-pro",
-    "perplexity-pro": "perplexity/sonar-pro",
+    "openai": "openai/gpt-5.5-pro",
+    "kimi": "moonshotai/kimi-k2.6",
+    "perplexity": "perplexity/sonar-reasoning-pro",
 }
 
 
@@ -49,7 +37,7 @@ class OpenRouter(AgnoOpenRouter):
         model_id: str | None = None,
         model_type: ModelType = "default",
         **kwargs: Any,
-    ) -> "OpenRouter":
+     ) -> "OpenRouter":
         """
             Create an OpenRouter model instance with project defaults.
 
@@ -87,10 +75,16 @@ class OpenRouter(AgnoOpenRouter):
 
         return cls(id=resolved_model_id, **kwargs)
 
+    # Preset model creators
     @classmethod
-    def create_claude(cls, **kwargs: Any) -> "OpenRouter":
-        """Create a Claude preset model instance."""
-        return cls.create(model_type="claude", **kwargs)
+    def create_claude_opus(cls, **kwargs: Any) -> "OpenRouter":
+        """Create a Claude Opus preset model instance."""
+        return cls.create(model_type="claude-opus", **kwargs)
+
+    @classmethod
+    def create_claude_sonnet(cls, **kwargs: Any) -> "OpenRouter":
+        """Create a Claude Sonnet preset model instance."""
+        return cls.create(model_type="claude-sonnet", **kwargs)
 
     @classmethod
     def create_grok(cls, **kwargs: Any) -> "OpenRouter":
@@ -98,12 +92,16 @@ class OpenRouter(AgnoOpenRouter):
         return cls.create(model_type="grok", **kwargs)
 
     @classmethod
-    def create_mini(cls, **kwargs: Any) -> "OpenRouter":
-        """Create a Mini preset model instance."""
-        return cls.create(model_type="mini", **kwargs)
-
-    @classmethod
-    def create_kimi_k2_5(cls, **kwargs: Any) -> "OpenRouter":
+    def create_kimi(cls, **kwargs: Any) -> "OpenRouter":
         """Create a Kimi K2.5 preset model instance."""
         return cls.create(model_type="kimi", **kwargs)
 
+    @classmethod
+    def create_perplexity(cls, **kwargs: Any) -> "OpenRouter":
+        """Create a Perplexity preset model instance."""
+        return cls.create(model_type="perplexity", **kwargs)
+
+    @classmethod
+    def create_openai(cls, **kwargs: Any) -> "OpenRouter":
+        """Create a OpenAI preset model instance."""
+        return cls.create(model_type="openai", **kwargs)
