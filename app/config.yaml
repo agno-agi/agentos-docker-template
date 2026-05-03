@@ -1,34 +1,10 @@
 chat:
   quick_prompts:
-    neo-team:
-      - "What is your team topology and how do you route work?"
-      - "I have a new project idea — help me think it through."
-      - "Given three approved issues, how would you route them?"
-    neo-communication-agent:
-      - "I want to build something but I'm not sure where to start."
-      - "Help me clarify the requirements for my project."
-    neo-project-manager:
-      - "Break this objective into a task plan with dependencies."
-      - "Review the current task plan and identify the next step."
-    neo-plane-agent:
-      - "List all active projects and their current status."
-      - "Create issues from this task plan."
-      - "What prompts and templates are stored in Plane?"
-    neo-tools-agent:
-      - "What tools do you have access to?"
-      - "Search the web for the latest on this topic."
-    neo-exec-content:
-      - "Draft a stakeholder update for this completed work."
-      - "Write documentation for this feature."
-    neo-pulse:
-      - "Run your pulse cycle now."
-      - "What is the current health status across all projects?"
-      - "Are there any stalled or blocked tasks?"
-    agno-assist:
-      - "Tell me about yourself"
-      - "Note: decided to use Postgres for the new project"
-      - "Research event sourcing patterns and save the key findings"
     knowledge-agent:
       - "What is Agno?"
       - "How do I create my first agent?"
       - "What documents are in your knowledge base?"
+    mcp-agent:
+      - "What is Agno?"
+      - "What tools do you have access to?"
+      - "What are Learning Machines?"

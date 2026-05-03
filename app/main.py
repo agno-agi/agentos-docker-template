@@ -1,33 +1,58 @@
+"""
+AgentOS
+-------
+
+The main entry point for AgentOS.
+
+Run:
+    python -m app.main
+"""
+
+from os import getenv
+from pathlib import Path
+from agno.os import AgentOS
 import logging
+from agents.knowledge_agent import knowledge_agent
+from agents.quant_knowledge_agent import load_quant_knowledge, quant_knowledge_agent
+from agents.mcp_agent import mcp_agent
+from db import get_postgres_db
 
-from settings import get_settings
-from src.runtime import build_agent_os
+logger = logging.getLogger(__name__)
 
-_SUPPRESSED_PATTERNS = [
-    "Failed to add validate decorator to entrypoint",
-    "is not a module, class, method, or function",
-]
-
-
-class _AgnoWarningFilter(logging.Filter):
-    """Suppress known benign Agno introspection warnings until upstream fix lands."""
-
-    def filter(self, record: logging.LogRecord) -> bool:
-        msg = record.getMessage()
-        return not any(p in msg for p in _SUPPRESSED_PATTERNS)
+# ---------------------------------------------------------------------------
+# Optional agents (require env vars to be configured)
+# ---------------------------------------------------------------------------
+_agents = [knowledge_agent, mcp_agent, quant_knowledge_agent]
 
 
-_filter = _AgnoWarningFilter()
-for _handler in logging.root.handlers:
-    _handler.addFilter(_filter)
-logging.root.addFilter(_filter)
+# ---------------------------------------------------------------------------
+# Create AgentOS
+# ---------------------------------------------------------------------------
+runtime_env = getenv("RUNTIME_ENV", "prd")
+scheduler_base_url = "http://127.0.0.1:8000" if runtime_env == "dev" else getenv("AGENTOS_URL")
 
-settings = get_settings()
-agent_os = build_agent_os(settings=settings)
+agent_os = AgentOS(
+    name="AgentOS",
+    tracing=True,
+    scheduler=True,
+    scheduler_base_url=scheduler_base_url,
+    db=get_postgres_db(),
+    agents=_agents,
+    config=str(Path(__file__).parent / "config.yaml"),
+)
+
 app = agent_os.get_app()
+
+
+@app.on_event("startup")
+async def seed_knowledge() -> None:
+    import asyncio
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, load_quant_knowledge)
+
 
 if __name__ == "__main__":
     agent_os.serve(
-        app="app.main:app",
-        reload=settings.runtime_env == "dev",
+        app="main:app",
+        reload=(runtime_env == "dev"),
     )

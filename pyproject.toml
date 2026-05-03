@@ -1,37 +1,24 @@
 [project]
-name = "the-ai-buildr-agentos"
+name = "agentos-docker"
 version = "1.0.0"
 requires-python = ">=3.12,<4"
 readme = "README.md"
 license-files = ["LICENSE"]
-authors = [{ name = "The-Ai-Buildr", email = "hello@the-ai-buildr.com" }]
+authors = [{ name = "Agno", email = "hello@agno.com" }]
 
 dependencies = [
-  # Agno
-  "agno[scheduler]",
-  "agno-infra",
-  "croniter",
-  # API
+  "agno[os]",
   "fastapi[standard]",
-  # Models
   "openai",
-  # Database
   "pgvector",
   "psycopg[binary]",
   "sqlalchemy",
-  "duckdb",
-  # Tools
   "mcp",
-  "composio",
-  "composio-agno",
-  "reportlab",
-  "ddgs",
-  "duckduckgo-search",
-  "slack-sdk",
-  # Tracing
   "opentelemetry-api",
   "opentelemetry-sdk",
   "openinference-instrumentation-agno",
+  "slack-sdk",
+  "pypdf",
 ]
 
 [project.optional-dependencies]
@@ -42,6 +29,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
+include = ["agents*", "db*", "app*"]
 
 [tool.ruff]
 line-length = 120
@@ -58,7 +46,7 @@ plugins = ["pydantic.mypy"]
 exclude = [".venv*"]
 
 [[tool.mypy.overrides]]
-module = ["pgvector.*", "setuptools.*", "agno.*", "duckdb.*", "composio.*", "composio_agno.*"]
+module = ["pgvector.*", "setuptools.*", "agno.*", "httpx.*", "mcp.*"]
 ignore_missing_imports = true
 
 [tool.uv.pip]
