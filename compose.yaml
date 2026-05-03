@@ -40,7 +40,11 @@ services:
       - WAIT_FOR_DB=True
       - PRINT_ENV_ON_LOAD=True
       # API keys
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-${OPENROUTER_API_KEY}}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://openrouter.ai/api/v1}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      # Slack
+      - SLACK_TOKEN=${SLACK_TOKEN:-}
     depends_on:
       - agentos-db
     networks:

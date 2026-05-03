@@ -17,6 +17,8 @@ dependencies = [
   "opentelemetry-api",
   "opentelemetry-sdk",
   "openinference-instrumentation-agno",
+  "slack-sdk",
+  "pypdf",
 ]
 
 [project.optional-dependencies]

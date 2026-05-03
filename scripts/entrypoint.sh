@@ -32,7 +32,21 @@ fi
 
 if [[ "$WAIT_FOR_DB" = true || "$WAIT_FOR_DB" = True ]]; then
     echo -e "    ${DIM}Waiting for database at ${DB_HOST}:${DB_PORT}...${NC}"
-    dockerize -wait tcp://$DB_HOST:$DB_PORT -timeout 300s
+    TIMEOUT="${WAIT_FOR_DB_TIMEOUT:-60}"
+    if command -v dockerize >/dev/null 2>&1; then
+        dockerize -wait tcp://$DB_HOST:$DB_PORT -timeout "${TIMEOUT}s"
+    else
+        # Fallback: simple port wait (no dockerize in image)
+        ELAPSED=0
+        until python3 -c "import socket; socket.create_connection(('$DB_HOST', $DB_PORT), timeout=2)" 2>/dev/null; do
+            sleep 2
+            ELAPSED=$((ELAPSED + 2))
+            if [[ $ELAPSED -ge $TIMEOUT ]]; then
+                echo -e "    ${BOLD}Timeout waiting for DB after ${TIMEOUT}s.${NC}" >&2
+                exit 1
+            fi
+        done
+    fi
     echo -e "    ${BOLD}Database ready.${NC}"
     echo ""
 fi
