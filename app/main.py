@@ -11,6 +11,7 @@ from agno.os import AgentOS
 from agno.utils.log import log_info
 
 from agents.code_search import code_search
+from agents.exa_research import exa_research
 from agents.web_search import web_search
 from db import get_postgres_db
 
@@ -68,7 +69,7 @@ agent_os = AgentOS(
     authorization=runtime_env == "prd",
     lifespan=lifespan,
     db=get_postgres_db(),
-    agents=[web_search, code_search],
+    agents=[web_search, code_search, exa_research],
     interfaces=interfaces,
     config=str(Path(__file__).parent / "config.yaml"),
 )

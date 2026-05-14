@@ -8,3 +8,7 @@ chat:
       - "What agents are available in this project?"
       - "How does the database connection work?"
       - "Walk me through the main entry point"
+    exa-research:
+      - "Find recent research papers on AI agents"
+      - "What are the latest developments in LLM reasoning?"
+      - "Find articles similar to https://arxiv.org/abs/2303.08774"
