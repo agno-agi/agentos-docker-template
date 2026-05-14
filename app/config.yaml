@@ -1,10 +1,10 @@
 chat:
   quick_prompts:
-    knowledge-agent:
-      - "What is Agno?"
-      - "How do I create my first agent?"
-      - "What documents are in your knowledge base?"
-    mcp-agent:
-      - "What is Agno?"
-      - "What tools do you have access to?"
-      - "What are Learning Machines?"
+    web-search:
+      - "Tell me about Agno's AgentOS"
+      - "What's the latest research from Anthropic?"
+      - "Search for OpenAI's latest model release"
+    code-search:
+      - "What agents are available in this project?"
+      - "How does the database connection work?"
+      - "Walk me through the main entry point"

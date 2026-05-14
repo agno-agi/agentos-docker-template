@@ -28,6 +28,9 @@ htmlcov/
 .ruff_cache/
 .cache
 
+# uv state — requirements.txt is the lockfile of record
+uv.lock
+
 # =========================
 # Virtual envs + secrets
 # =========================
@@ -36,6 +39,7 @@ venv/
 env/
 ENV/
 .env
+.env.production
 .envrc
 
 # =========================
@@ -59,6 +63,7 @@ Thumbs.db
 # Project-specific
 # =========================
 tmp
+.claude
 
 # Optional: local PyPI creds (uncomment if you ever create it)
 # .pypirc

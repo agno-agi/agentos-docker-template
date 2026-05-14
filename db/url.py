@@ -1,8 +1,6 @@
 """
 Database URL
-------------
-
-Build database connection URL from environment variables.
+============
 """
 
 from os import getenv

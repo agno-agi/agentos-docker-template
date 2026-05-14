@@ -3,14 +3,14 @@ services:
     image: agnohq/pgvector:18
     container_name: agentos-db
     restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
     environment:
       POSTGRES_USER: ${DB_USER:-ai}
       POSTGRES_PASSWORD: ${DB_PASS:-ai}
       POSTGRES_DB: ${DB_DATABASE:-ai}
-    volumes:
-      - pgdata:/var/lib/postgresql
-    ports:
-      - "5432:5432"
     networks:
       - agentos
 
@@ -18,29 +18,32 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ${IMAGE_NAME:-agno-agentos}:${IMAGE_TAG:-latest}
     container_name: agentos-api
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    image: ${IMAGE_NAME:-agentos}:${IMAGE_TAG:-latest}
+    # --reload-dir limits the watcher to dirs that actually contain runtime
+    # code. Without this, edits under docs/, scripts/, tmp/ would each
+    # restart uvicorn — disruptive when chatting with an agent.
+    command: >
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      --reload-dir agents --reload-dir app --reload-dir db
     restart: unless-stopped
     ports:
       - "8000:8000"
     volumes:
-      # Hot-reload: mount source code
       - .:/app
+    env_file:
+      - path: .env
+        required: false
     environment:
-      - RUNTIME_ENV=dev
-      - AGNO_DEBUG=True
-      - PYTHONPATH=/app
-      # Database
-      - DB_HOST=agentos-db
-      - DB_PORT=5432
-      - DB_USER=${DB_USER:-ai}
-      - DB_PASS=${DB_PASS:-ai}
-      - DB_DATABASE=${DB_DATABASE:-ai}
-      - WAIT_FOR_DB=True
-      - PRINT_ENV_ON_LOAD=True
-      # API keys
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      RUNTIME_ENV: dev
+      AGNO_DEBUG: "True"
+      WAIT_FOR_DB: "True"
+      AGENTOS_URL: http://127.0.0.1:8000
+      DB_HOST: agentos-db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-ai}
+      DB_PASS: ${DB_PASS:-ai}
+      DB_DATABASE: ${DB_DATABASE:-ai}
     depends_on:
       - agentos-db
     networks:

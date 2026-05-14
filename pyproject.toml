@@ -1,22 +1,21 @@
 [project]
 name = "agentos-docker"
 version = "1.0.0"
+description = "Agent platform with Postgres and AgentOS, deployed with Docker."
 requires-python = ">=3.12,<4"
 readme = "README.md"
 license-files = ["LICENSE"]
 authors = [{ name = "Agno", email = "hello@agno.com" }]
 
 dependencies = [
-  "agno[os]",
+  "agno[os,slack]",
   "fastapi[standard]",
+  "mcp",
   "openai",
+  "parallel-web",
   "pgvector",
   "psycopg[binary]",
   "sqlalchemy",
-  "mcp",
-  "opentelemetry-api",
-  "opentelemetry-sdk",
-  "openinference-instrumentation-agno",
 ]
 
 [project.optional-dependencies]
@@ -27,7 +26,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["agents*", "db*", "app*"]
+include = ["agents*", "app*", "db*", "evals*"]
 
 [tool.ruff]
 line-length = 120
@@ -44,7 +43,7 @@ plugins = ["pydantic.mypy"]
 exclude = [".venv*"]
 
 [[tool.mypy.overrides]]
-module = ["pgvector.*", "setuptools.*", "agno.*", "httpx.*", "mcp.*"]
+module = ["pgvector.*", "agno.*", "httpx.*", "mcp.*", "sqlalchemy.*", "fastapi.*"]
 ignore_missing_imports = true
 
 [tool.uv.pip]
