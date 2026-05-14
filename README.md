@@ -99,7 +99,7 @@ if SLACK_BOT_TOKEN and SLACK_SIGNING_SECRET:
     )
 ```
 
-Swap the `agent=` arg to route Slack to a different agent. For the Slack-side app setup, see the [Agno Slack interface docs](https://docs.agno.com/agent-os/interfaces/overview).
+Swap the `agent=` arg to route Slack to a different agent. For the Slack-side app setup, see the [Agno Slack docs](https://docs.agno.com/agent-os/interfaces/slack/introduction).
 
 For Discord, Telegram, WhatsApp, or a custom UI, mirror the same conditional with the relevant interface from Agno. See the [Agno interfaces guide](https://docs.agno.com/agent-os/interfaces/overview).
 
