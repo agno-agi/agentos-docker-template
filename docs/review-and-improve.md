@@ -42,7 +42,7 @@ Restate the surface area in 4-5 lines so the user can redirect before you read e
 
 - Top-level docs: [`README.md`](../README.md), [`AGENTS.md`](../AGENTS.md), [`docs/*.md`](../docs/), [`example.env`](../example.env).
 - Code: [`app/`](../app/), [`agents/`](../agents/), [`db/`](../db/), [`evals/`](../evals/), [`scripts/`](../scripts/).
-- Configs: [`compose.yaml`](../compose.yaml), [`Dockerfile`](../Dockerfile), [`pyproject.toml`](../pyproject.toml), [`railway.json`](../railway.json).
+- Configs: [`compose.yaml`](../compose.yaml), [`Dockerfile`](../Dockerfile), [`pyproject.toml`](../pyproject.toml).
 
 Skip: `.venv/`, `*_cache/`, `.git/`, anything generated.
 

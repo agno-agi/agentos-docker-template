@@ -27,16 +27,16 @@ echo ""
 
 if [[ "$1" = "upgrade" ]]; then
     echo -e "    ${DIM}Mode: upgrade${NC}"
-    echo -e "    ${DIM}> uv pip compile pyproject.toml --upgrade -o requirements.txt${NC}"
+    echo -e "    ${DIM}> uv pip compile pyproject.toml --no-cache --upgrade -o requirements.txt${NC}"
     echo ""
     UV_CUSTOM_COMPILE_COMMAND="./scripts/generate_requirements.sh upgrade" \
-        uv pip compile ${REPO_ROOT}/pyproject.toml --upgrade -o ${REPO_ROOT}/requirements.txt
+        uv pip compile ${REPO_ROOT}/pyproject.toml --no-cache --upgrade -o ${REPO_ROOT}/requirements.txt
 else
     echo -e "    ${DIM}Mode: standard${NC}"
-    echo -e "    ${DIM}> uv pip compile pyproject.toml -o requirements.txt${NC}"
+    echo -e "    ${DIM}> uv pip compile pyproject.toml --no-cache -o requirements.txt${NC}"
     echo ""
     UV_CUSTOM_COMPILE_COMMAND="./scripts/generate_requirements.sh" \
-        uv pip compile ${REPO_ROOT}/pyproject.toml -o ${REPO_ROOT}/requirements.txt
+        uv pip compile ${REPO_ROOT}/pyproject.toml --no-cache -o ${REPO_ROOT}/requirements.txt
 fi
 
 echo ""
